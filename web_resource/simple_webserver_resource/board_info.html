@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>zhanzr21's simple webserver on AT-START-F407 board</title>
+        <style>
+            h1 {
+              background-color: lightgoldenrodyellow;
+            }
+            body {
+              background-color: lightcyan;
+            }
+        </style>
+    </head>
+    <body>
+        <h1><font size=15>Simple Webserver on AT-START-F407</font></h1>
+        <table height="800">
+            <tr>
+            <th>peripheral</th>
+            <th>Information</th>
+            </tr>
+            <tr>
+                <td>LED</td>
+                <td>
+                    <form action="method=update_led"> <span></span>
+                        <div style="text-align: center;">
+                            <div style="text-align: center;"> <span>
+                                    <font size="5"><input name="led" type="checkbox" value="2"> LED2</font><br>
+                                </span> </div><span>
+                                <font size="5" ></font>
+                            </span>
+                            <div style="text-align: center;"> <span>
+                                    <font size="5"><input name="led" type="checkbox" value="3"> LED3</font><br>
+                                </span> </div><span>
+                                <font size="5" ></font>
+                            </span>
+                            <div style="text-align: center;"> <span>
+                                    <font size="5"><input name="led" type="checkbox" value="4"> LED4</font><br>
+                                </span> 
+                            </div>
+                            <input type="submit"  value="                      Update LED                     ">
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>ADC</td>
+                <td>
+                    <p align="center">
+                        <font size="6">This page implement real-time sampling of voltage, ADC channel is 4<br></font>
+                        <font size="6"><br></font>
+                    </p>
+                    <div style="text-align: center;"> <big><span><big>Voltage:</big> <span
+                                    style="color: red;"><big>%.2f V</big></span></span></big> </div>
+                    <table border="3" cellpadding="0" cellspacing="0"
+                        style="background-color: rgb(204, 204, 204); width: 520px; text-align: left; margin-left: auto; margin-right: auto;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <table border="0" cellpadding="0" cellspacing="0" width=" 363">
+                                            <tbody>
+                                                <tr>
+                                                    <td bgcolor="#33FF00" style="text-align: right;">&nbsp;</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table border="0" style="width: 520px; text-align: left; margin-left: auto; margin-right: auto;">
+                        <tbody>
+                            <tr>
+                                <td style="color: rgb(51, 51, 153);" width="14">0V</td>
+                                <td width="14">0.5V</td>
+                                <td width="14">1V</td>
+                                <td width="14">1.5V</td>
+                                <td width="14">2V</td>
+                                <td width="14">2.5V</td>
+                                <td style="width: 14px;">3V</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td><a href="homepage.html"><font size=15>Home</font></a></td>
+            </tr>
+        </table>
+    </body>
+</html>

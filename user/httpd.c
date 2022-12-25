@@ -59,6 +59,7 @@
 #include <string.h> /* memset */
 #include <stdlib.h> /* atoi */
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "at32f403a_407_adc.h"
 #include "at32f403a_407_board.h"
@@ -99,23 +100,14 @@
 
 #define CUSTOM_HTTP_SERVER
 
-typedef struct {
-  const char *name;
-  uint8_t shtml;
-} default_filename;
-
-volatile static const default_filename httpd_default_filenames[] = {
-  {"/index.shtml", 1 },
-  {"/index.ssi",   1 },
-  {"/index.shtm",  1 },
-  {"/AT32F407.html",   0 },
-  {"/AT32F407LED.html",   0 },
-  {"/AT32F407ADC.html",   0 }
-};
-
 char html_tmp[4096] = {0};
 
-#define NUM_DEFAULT_FILENAMES LWIP_ARRAYSIZE(httpd_default_filenames)
+bool g_binary_file_debug = false;
+
+extern const unsigned char homepage_name[];
+extern const unsigned char board_info_name[];
+extern const unsigned char f407board_img_name[];
+extern const unsigned char favicon_name[];
 
 #if LWIP_HTTPD_SUPPORT_REQUESTLIST
 /** HTTP request is copied here from pbufs for simple parsing */
@@ -1080,6 +1072,14 @@ http_send_data_nonssi(struct altcp_pcb *pcb, struct http_state *hs)
    * Just send the data as we received it from the file. */
   len = (uint16_t)LWIP_MIN(hs->left, 0xffff);
 
+  // Debug
+  printf("\n%s %u-%u:\n", __func__, len, 1024);
+  if(!g_binary_file_debug) {
+  printf_head(hs->file, len, 1024);
+  } else {
+	printf("binary, now ignore debug output\n");
+  }
+
   err = http_write(pcb, hs->file, &len, HTTP_IS_DATA_VOLATILE(hs));
   if (err == ERR_OK) {
     data_to_send = 1;
@@ -2026,23 +2026,27 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
     if (hs->file == NULL)
     {
       data = p->payload;
-      if (strncmp(data, "GET /AT32F407ADC", 16) == 0)
+
+      // Debug
+      printf("\n%s %u-%u:\n", __func__, p->tot_len, 512);
+      printf_head(data, p->tot_len, 512);
+
+      if (strncmp(data+4, board_info_name, strlen(board_info_name)) == 0)
       {
-        uint16_t ADCVal = 0, iADCVa;
+          g_binary_file_debug = false;
+
+    	  uint16_t ADCVal = 0, iADCVa;
         float fADCVal = 0;
 
         pbuf_free(p);
 
         ADCVal = adc_ordinary_conversion_data_get(ADC1);
 
-        // TODO: For test only, remove it after test
-        ADCVal *= 2;
-
         fADCVal = (float)((float)ADCVal / (float)4096.00) * (float)3.3;
 
         iADCVa = ((ADCVal * 100 ) / 4096 ) * 512 / 100;
 
-        fs_open(&file, "/AT32F407ADC.html");
+        fs_open(&file, board_info_name);
         sprintf(html_tmp, file.data, fADCVal, iADCVa);
         hs->file = html_tmp;
         hs->left = strlen(html_tmp);
@@ -2053,22 +2057,11 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
            successfully sent by a call to the http_sent() function. */
         tcp_sent(pcb, http_sent);
       }
-      else if (strncmp(data, "GET /AT32F407LED", 16) == 0)
-      {
-        pbuf_free(p);
-        fs_open(&file, "/AT32F407LED.html");
-        hs->file = file.data;
-        hs->left = file.len;
-
-        http_send(pcb, hs);
-
-        /* Tell TCP that we wish be to informed of data that has been
-           successfully sent by a call to the http_sent() function. */
-        tcp_sent(pcb, http_sent);
-      }
       else if (strncmp(data, "GET /method=get", 15) == 0)
       {
-        i = 15;
+          g_binary_file_debug = false;
+
+    	  i = 15;
         while(data[i]!=0x20/* */)
         {
           i++;
@@ -2131,44 +2124,129 @@ http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p, err_t err)
            successfully sent by a call to the http_sent() function. */
         tcp_sent(pcb, http_sent);
       }
-      else if (strncmp(data, "GET ", 4) == 0)
-      {
-        for (i = 0; i < 40; i++)
-        {
-          if (((char *)data + 4)[i] == ' ' ||
-              ((char *)data + 4)[i] == '\r' ||
-              ((char *)data + 4)[i] == '\n')
-          {
-            ((char *)data + 4)[i] = 0;
-          }
-        }
+      else if ((strncmp(data+4, ROOT_PATH, 2) == 0)
+    		  || (strncmp(data+4, homepage_name, strlen(homepage_name)) == 0) )
+            {
 
-        i = 0;
-        j = 0;
+          g_binary_file_debug = false;
+          printf("GET %s\n",homepage_name);
 
-        do
-        {
-          fname[i] = ((char *)data + 4)[j];
-          j++;
-          i++;
-        } while (fname[i - 1] != 0 && i < 40);
+              for (i = 0; i < 40; i++)
+              {
+                if (((char *)data + 4)[i] == ' ' ||
+                    ((char *)data + 4)[i] == '\r' ||
+                    ((char *)data + 4)[i] == '\n')
+                {
+                  ((char *)data + 4)[i] = 0;
+                }
+              }
 
-        pbuf_free(p);
+              i = 0;
+              j = 0;
+
+              do
+              {
+                fname[i] = ((char *)data + 4)[j];
+                j++;
+                i++;
+              } while (fname[i - 1] != 0 && i < 40);
+
+              pbuf_free(p);
 
 
-        fs_open(&file, "/AT32F407.html");
+              fs_open(&file, homepage_name);
 
-        hs->file = file.data;
-        hs->left = file.len;
-        http_send(pcb, hs);
+              hs->file = file.data;
+              hs->left = file.len;
+              http_send(pcb, hs);
 
-        /* Tell TCP that we wish be to informed of data that has been
-           successfully sent by a call to the http_sent() function. */
-        tcp_sent(pcb, http_sent);
-      }
+              /* Tell TCP that we wish be to informed of data that has been
+                 successfully sent by a call to the http_sent() function. */
+              tcp_sent(pcb, http_sent);
+            }
+      else if (strncmp(data+4, f407board_img_name, strlen(f407board_img_name)) == 0)
+                  {
+          g_binary_file_debug = true;
+
+    	  printf("GET %s\n",f407board_img_name);
+
+                    for (i = 0; i < 40; i++)
+                    {
+                      if (((char *)data + 4)[i] == ' ' ||
+                          ((char *)data + 4)[i] == '\r' ||
+                          ((char *)data + 4)[i] == '\n')
+                      {
+                        ((char *)data + 4)[i] = 0;
+                      }
+                    }
+
+                    i = 0;
+                    j = 0;
+
+                    do
+                    {
+                      fname[i] = ((char *)data + 4)[j];
+                      j++;
+                      i++;
+                    } while (fname[i - 1] != 0 && i < 40);
+
+                    pbuf_free(p);
+
+
+                    fs_open(&file, f407board_img_name);
+
+                    hs->file = file.data;
+                    hs->left = file.len;
+                    http_send(pcb, hs);
+
+                    /* Tell TCP that we wish be to informed of data that has been
+                       successfully sent by a call to the http_sent() function. */
+                    tcp_sent(pcb, http_sent);
+                  }
+      else if (strncmp(data+4, favicon_name, strlen(favicon_name)) == 0)
+                        {
+          g_binary_file_debug = true;
+
+    	  printf("GET %s\n",favicon_name);
+
+                          for (i = 0; i < 40; i++)
+                          {
+                            if (((char *)data + 4)[i] == ' ' ||
+                                ((char *)data + 4)[i] == '\r' ||
+                                ((char *)data + 4)[i] == '\n')
+                            {
+                              ((char *)data + 4)[i] = 0;
+                            }
+                          }
+
+                          i = 0;
+                          j = 0;
+
+                          do
+                          {
+                            fname[i] = ((char *)data + 4)[j];
+                            j++;
+                            i++;
+                          } while (fname[i - 1] != 0 && i < 40);
+
+                          pbuf_free(p);
+
+
+                          fs_open(&file, favicon_name);
+
+                          hs->file = file.data;
+                          hs->left = file.len;
+                          http_send(pcb, hs);
+
+                          /* Tell TCP that we wish be to informed of data that has been
+                             successfully sent by a call to the http_sent() function. */
+                          tcp_sent(pcb, http_sent);
+                        }
       else
       {
-        http_close_conn(pcb, hs);
+    	  printf("GET else branch\n");
+
+    	  http_close_conn(pcb, hs);
       }
     }
     else

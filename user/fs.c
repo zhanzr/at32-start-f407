@@ -29,6 +29,7 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
+#include "at32f403a_407_board.h"
 
 #include "lwip/apps/httpd_opts.h"
 #include "lwip/def.h"
@@ -171,3 +172,16 @@ fs_bytes_left(struct fs_file *file)
   return file->len - file->index;
 }
 
+void web_resource_prepare(void) {
+	file_board_info_html->data = FileTab[0].Start;
+	file_board_info_html->len = (uint32_t)FileTab[1].Start-(uint32_t)FileTab[0].Start;
+
+	file_homepage_html->data = FileTab[1].Start;
+	file_homepage_html->len = (uint32_t)FileTab[2].Start-(uint32_t)FileTab[1].Start;
+
+	file_board_jpg->data = FileTab[2].Start;
+	file_board_jpg->len = (uint32_t)FileTab[3].Start-(uint32_t)FileTab[2].Start;
+
+	file_favicon_ico_html->data = FileTab[3].Start;
+	file_favicon_ico_html->len = (uint32_t)FileTab[4].Start-(uint32_t)FileTab[3].Start;
+}

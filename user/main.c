@@ -43,6 +43,8 @@
 uint8_t g_speed = FAST;
 volatile uint32_t local_time = 0;
 
+extern void web_resource_prepare(void);
+
 void adc_configuration(void);
 
 /**
@@ -58,9 +60,13 @@ int main(void)
 
   at32_board_init();
 
+  uart_print_init(921600);
+  printf("Start %u\t%u\n", local_time, system_core_clock);
   nvic_priority_group_config(NVIC_PRIORITY_GROUP_4);
 
   delay_init();
+
+  web_resource_prepare();
 
   status = emac_system_init();
 

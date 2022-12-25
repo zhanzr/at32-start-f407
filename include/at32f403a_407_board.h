@@ -36,6 +36,16 @@ extern "C" {
 /** @addtogroup AT32F403A_407_board
   * @{
   */
+#ifndef MAX
+#define MAX(x , y)  (((x) > (y)) ? (x) : (y))
+#endif
+#ifndef MIN
+#define MIN(x , y)  (((x) < (y)) ? (x) : (y))
+#endif
+
+typedef struct http_file { uint32_t       Id; const uint8_t *Start; } const HTTP_FILE;
+
+#define	ROOT_PATH	"/ "
 
 /** @addtogroup BOARD
   * @{

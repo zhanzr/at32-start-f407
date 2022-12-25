@@ -161,13 +161,13 @@ void time_update(void)
 void lwip_periodic_handle(volatile uint32_t localtime)
 {
 
-  /* TCP periodic process every 250 ms */
+  /* TCP periodic process */
   if (localtime - tcp_timer >= TCP_TMR_INTERVAL || localtime < tcp_timer)
   {
     tcp_timer =  localtime;
     tcp_tmr();
   }
-  /* ARP periodic process every 5s */
+  /* ARP periodic process */
   if (localtime - arp_timer >= ARP_TMR_INTERVAL || localtime < arp_timer)
   {
     arp_timer =  localtime;
