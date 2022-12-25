@@ -58,7 +58,7 @@ f407board_img_name,
 FS_FILE_FLAGS_HEADER_INCLUDED | FS_FILE_FLAGS_HEADER_PERSISTENT,
 }};
 
-struct fsdata_file file_favicon_ico_html[] = { {
+struct fsdata_file file_favicon_ico[] = { {
 		file_board_jpg,
 		favicon_name,
 		0,
@@ -66,5 +66,5 @@ struct fsdata_file file_favicon_ico_html[] = { {
 FS_FILE_FLAGS_HEADER_INCLUDED | FS_FILE_FLAGS_HEADER_PERSISTENT,
 }};
 
-#define FS_ROOT file_favicon_ico_html
+#define FS_ROOT file_favicon_ico
 #define FS_NUMFILES 4

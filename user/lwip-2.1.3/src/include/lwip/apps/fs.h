@@ -111,7 +111,7 @@ struct fsdata_file {
   const struct fsdata_file *next;
   const unsigned char *name;
   const unsigned char *data;
-  int len;
+  uint32_t len;
   u8_t flags;
 #if HTTPD_PRECALCULATED_CHECKSUM
   u16_t chksum_count;

@@ -45,7 +45,13 @@ extern "C" {
 
 typedef struct http_file { uint32_t       Id; const uint8_t *Start; } const HTTP_FILE;
 
+#define	GET_PREFIX	"GET "
+#define	GET_PREFIX_OFFSET	4
+
 #define	ROOT_PATH	"/ "
+#define	METHOD_STR	"/method="
+
+#define	DEFAULT_FILE_NAME	"/homepage.html"
 
 /** @addtogroup BOARD
   * @{

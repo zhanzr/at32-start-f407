@@ -142,13 +142,20 @@ void uart_print_init(uint32_t baudrate)
   usart_enable(PRINT_UART, TRUE);
 }
 
-void printf_head(const uint8_t* buf, uint32_t len, uint32_t len_limit) {
-	static debug_buf[4096];
+void printf_head(const uint8_t* prefix, const uint8_t* buf, uint32_t len, uint32_t len_limit) {
+#define BUF_LEN	4096
 	uint32_t min_len = MIN(len, len_limit);
-	memcpy(debug_buf, buf, min_len);
-	debug_buf[min_len] = 0;
-	printf("\t", len, len_limit);
+
+	if((strlen(prefix) + min_len) >= BUF_LEN) {
+		printf("\n%s out limit\n", __func__);
+		min_len = BUF_LEN - strlen(prefix) - 1;
+	}
+	static uint8_t debug_buf[BUF_LEN];
+	strcpy(debug_buf, prefix);
+	memcpy(debug_buf + strlen(prefix), buf, min_len);
+	debug_buf[strlen(prefix) + min_len] = 0;
 	printf(debug_buf);
+#undef BUF_LEN
 }
 /**
   * @brief  board initialize interface init led and button
