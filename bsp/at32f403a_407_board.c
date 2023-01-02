@@ -22,7 +22,7 @@
   *
   **************************************************************************
   */
-
+#include <string.h>
 #include "at32f403a_407_board.h"
 
 /** @addtogroup AT32F403A_407_board
@@ -310,6 +310,13 @@ void at32_led_toggle(led_type led)
     return;
   if(led_gpio_pin[led])
     led_gpio_port[led]->odt ^= led_gpio_pin[led];
+}
+
+uint32_t at32_led_get_output_status(led_type led) {
+	if (led > (LED_NUM - 1)) {
+		return 0;
+	}
+	return (led_gpio_port[led]->odt & led_gpio_pin[led]);
 }
 
 /**

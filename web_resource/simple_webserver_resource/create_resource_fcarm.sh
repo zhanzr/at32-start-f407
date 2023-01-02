@@ -3,7 +3,7 @@ OUTPUT=binary_resource.c
 #$FCARM 404.html,atstartf407_with_ethernet.jpg,board_info.html,board_little.jpg,favicon.ico,homepage.html TO $OUTPUT
 
 #Only Transfer the binary file
-$FCARM board_info.html,homepage.html,atstartf407_with_ethernet.jpg,favicon.ico TO $OUTPUT
+$FCARM adc_info.html,led_info.html,homepage.html,atstartf407_with_ethernet.jpg,favicon.ico TO $OUTPUT
 
 echo "post processing"
 sed -i 's/#include <Net_Config.h>/\/\/#include <Net_Config.h>/' $OUTPUT

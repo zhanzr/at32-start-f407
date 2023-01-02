@@ -174,19 +174,23 @@ fs_bytes_left(struct fs_file *file)
 }
 
 void web_resource_prepare(void) {
-	file_board_info_html->data = FileTab[0].Start;
-	file_board_info_html->len = (uint32_t)FileTab[1].Start-(uint32_t)FileTab[0].Start;
+	file_adc_info_html->data = FileTab[0].Start;
+	file_adc_info_html->len = (uint32_t)FileTab[1].Start-(uint32_t)FileTab[0].Start;
 
-	file_homepage_html->data = FileTab[1].Start;
-	file_homepage_html->len = (uint32_t)FileTab[2].Start-(uint32_t)FileTab[1].Start;
+	file_led_info_html->data = FileTab[1].Start;
+	file_led_info_html->len = (uint32_t)FileTab[2].Start-(uint32_t)FileTab[1].Start;
 
-	file_board_jpg->data = FileTab[2].Start;
-	file_board_jpg->len = (uint32_t)FileTab[3].Start-(uint32_t)FileTab[2].Start;
+	file_homepage_html->data = FileTab[2].Start;
+	file_homepage_html->len = (uint32_t)FileTab[3].Start-(uint32_t)FileTab[2].Start;
 
-	file_favicon_ico->data = FileTab[3].Start;
-	file_favicon_ico->len = (uint32_t)FileTab[4].Start-(uint32_t)FileTab[3].Start;
+	file_board_jpg->data = FileTab[3].Start;
+	file_board_jpg->len = (uint32_t)FileTab[4].Start-(uint32_t)FileTab[3].Start;
 
-	printf("%s %p %u\n", file_board_info_html->name, file_board_info_html->data, file_board_info_html->len);
+	file_favicon_ico->data = FileTab[4].Start;
+	file_favicon_ico->len = (uint32_t)FileTab[5].Start-(uint32_t)FileTab[4].Start;
+
+	printf("%s %p %u\n", file_adc_info_html->name, file_adc_info_html->data, file_adc_info_html->len);
+	printf("%s %p %u\n", file_led_info_html->name, file_led_info_html->data, file_led_info_html->len);
 	printf("%s %p %u\n", file_homepage_html->name, file_homepage_html->data, file_homepage_html->len);
 	printf("%s %p %u\n", file_board_jpg->name, file_board_jpg->data, file_board_jpg->len);
 	printf("%s %p %u\n", file_favicon_ico->name, file_favicon_ico->data, file_favicon_ico->len);

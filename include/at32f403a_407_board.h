@@ -50,6 +50,7 @@ typedef struct http_file { uint32_t       Id; const uint8_t *Start; } const HTTP
 
 #define	ROOT_PATH	"/ "
 #define	METHOD_STR	"/method="
+#define	METHOD_UPDATE_LED	"update_led"
 
 #define	DEFAULT_FILE_NAME	"/homepage.html"
 
@@ -131,6 +132,7 @@ void at32_led_init(led_type led);
 void at32_led_on(led_type led);
 void at32_led_off(led_type led);
 void at32_led_toggle(led_type led);
+uint32_t at32_led_get_output_status(led_type led);
 
 /* button operation function */
 void at32_button_init(void);

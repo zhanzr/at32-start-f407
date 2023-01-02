@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>zhanzr21's simple webserver on AT-START-F407 board</title>
+    </head>
+    <body>
+        <h1><font size=15>Simple Webserver on AT-START-F407</font></h1>
+        <table height="800">
+            <tr>
+            <th>peripheral</th>
+            <th>Information</th>
+            </tr>
+            <tr>
+                <td>LED</td>
+                <td>
+                    <form action="method=update_led"> <span></span>
+                        <div style="text-align: center;">
+                            <div style="text-align: center;"> <span>
+                                    <font size="5"><input name="led" type="checkbox" value="2" %s>LED2</font><br>
+                                </span>
+                             </div>
+                            <div style="text-align: center;"> <span>
+                                    <font size="5"><input name="led" type="checkbox" value="3" %s>LED3</font><br>
+                                </span>
+                            </div>
+                            <div style="text-align: center;"> <span>
+                                    <font size="5"><input name="led" type="checkbox" value="4" %s>LED4</font><br>
+                                </span> 
+                            </div>
+                            <input type="submit"  value="                      Update LED                     ">
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td><a href="homepage.html"><font size=15>Home</font></a></td>
+            </tr>
+        </table>
+    </body>
+</html>

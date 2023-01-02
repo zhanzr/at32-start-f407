@@ -68,6 +68,28 @@ int main(void)
 
   web_resource_prepare();
 
+  at32_led_off(LED2);
+  at32_led_off(LED3);
+  at32_led_off(LED4);
+  printf("status after off: %u %u %u\n",
+		  at32_led_get_output_status(LED2),
+		  at32_led_get_output_status(LED3),
+		  at32_led_get_output_status(LED4));
+  at32_led_on(LED2);
+  at32_led_on(LED3);
+  at32_led_on(LED4);
+  printf("status after on: %u %u %u\n",
+		  at32_led_get_output_status(LED2),
+		  at32_led_get_output_status(LED3),
+		  at32_led_get_output_status(LED4));
+  at32_led_off(LED2);
+  at32_led_off(LED3);
+  at32_led_off(LED4);
+  printf("status after off: %u %u %u\n",
+		  at32_led_get_output_status(LED2),
+		  at32_led_get_output_status(LED3),
+		  at32_led_get_output_status(LED4));
+
   status = emac_system_init();
 
   while(status == ERROR);

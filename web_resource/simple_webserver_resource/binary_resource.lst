@@ -1,50 +1,55 @@
-FCARM FILE CONVERTER V2.58                                                              12/25/2022  01:05:00  PAGE 1
+FCARM FILE CONVERTER V2.58                                                              01/02/2023  16:55:05  PAGE 1
 
 
 FCARM FILE CONVERTER V2.58, INVOKED BY:
-D:\KEIL_V5\ARM\BIN\FCARM.EXE board_info.html, homepage.html, atstartf407_with_ethernet.jpg, favicon.ico TO binary_resour
->> ce.c
+D:\KEIL_V5\ARM\BIN\FCARM.EXE adc_info.html, led_info.html, homepage.html, atstartf407_with_ethernet.jpg, favicon.ico TO 
+>> binary_resource.c
 
 
-INPUT FILE: board_info.html
+INPUT FILE: adc_info.html
   File type  = HTML CODE
-  Input size = 4339 bytes
-  Redundancy = 2283 bytes (53%)
-  Image size = 2056 bytes (47%)
+  Input size = 1171 bytes
+  Redundancy = 483 bytes (42%)
+  Image size = 688 bytes (58%)
 +---------------------------------------------------------------------------------------------------------------------+
-<!DOCTYPE html><html><head><title>zhanzr21's simple webserver on AT-START-F407 board</title><style> h1 { background-col
-or: lightgoldenrodyellow; } body { background-color: lightcyan; } </style></head><body><h1><font size=15>Simple Webserv
-er on AT-START-F407</font></h1><table height="800"><tr><th>peripheral</th><th>Information</th></tr><tr><td>LED</td><td>
-<form action="method=update_led"><span></span><div style="text-align: center;"><div style="text-align: center;"><span><
-font size="5"><input name="led" type="checkbox" value="2"> LED2</font><br></span></div><span><font size="5" ></font></s
-pan><div style="text-align: center;"><span><font size="5"><input name="led" type="checkbox" value="3"> LED3</font><br><
-/span></div><span><font size="5" ></font></span><div style="text-align: center;"><span><font size="5"><input name="led"
- type="checkbox" value="4"> LED4</font><br></span></div><input type="submit" value=" Update LED "></div></form></td></t
-r><tr><td>ADC</td><td><p align="center"><font size="6">This page implement real-time sampling of voltage, ADC channel i
-s 4<br></font><font size="6"><br></font></p><div style="text-align: center;"><big><span><big>Voltage:</big><span style=
-"color: red;"><big>%.2f V</big></span></span></big></div><table border="3" cellpadding="0" cellspacing="0" style="backg
-round-color: rgb(204, 204, 204); width: 520px; text-align: left; margin-left: auto; margin-right: auto;"><tbody><tr><td
-><div><table border="0" cellpadding="0" cellspacing="0" width=" 363"><tbody><tr><td bgcolor="#33FF00" style="text-align
-: right;">&nbsp;</td></tr></tbody></table></div></td></tr></tbody></table><table border="0" style="width: 520px; text-a
-lign: left; margin-left: auto; margin-right: auto;"><tbody><tr><td style="color: rgb(51, 51, 153);" width="14">0V</td><
-td width="14">0.5V</td><td width="14">1V</td><td width="14">1.5V</td><td width="14">2V</td><td width="14">2.5V</td><td 
-style="width: 14px;">3V</td></tr></tbody></table></td></tr><tr><td><a href="homepage.html"><font size=15>Home</font></a
-></td></tr></table></body></html>
+<!DOCTYPE html><html><head><title>zhanzr21's simple webserver on AT-START-F407 board</title><meta http-equiv="Refresh" 
+content="2"></head><body><h1><font size=15>Simple Webserver on AT-START-F407</font></h1><table height="800"><tr><th>per
+ipheral</th><th>Information</th></tr><tr><td>ADC</td><td><p align="center"><font size="6">This page implement real-time
+ sampling of voltage, ADC is reference channel<br></font><font size="6"><br></font></p><div style="text-align: center;"
+><big>Voltage:</big><span style="color: red;"><big>%.2f V</big></span><p><big> %u Local Ticks</big></p></div></td></tr>
+<tr><td><a href="homepage.html"><font size=15>Home</font></a></td></tr></table></body></html>
++---------------------------------------------------------------------------------------------------------------------+
+
+
+INPUT FILE: led_info.html
+  File type  = HTML CODE
+  Input size = 1704 bytes
+  Redundancy = 824 bytes (49%)
+  Image size = 880 bytes (51%)
++---------------------------------------------------------------------------------------------------------------------+
+<!DOCTYPE html><html><head><title>zhanzr21's simple webserver on AT-START-F407 board</title></head><body><h1><font size
+=15>Simple Webserver on AT-START-F407</font></h1><table height="800"><tr><th>peripheral</th><th>Information</th></tr><t
+r><td>LED</td><td><form action="method=update_led"><span></span><div style="text-align: center;"><div style="text-align
+: center;"><span><font size="5"><input name="led" type="checkbox" value="2" %s>LED2</font><br></span></div><div style="
+text-align: center;"><span><font size="5"><input name="led" type="checkbox" value="3" %s>LED3</font><br></span></div><d
+iv style="text-align: center;"><span><font size="5"><input name="led" type="checkbox" value="4" %s>LED4</font><br></spa
+n></div><input type="submit" value=" Update LED "></div></form></td></tr><tr><td><a href="homepage.html"><font size=15>
+Home</font></a></td></tr></table></body></html>
 +---------------------------------------------------------------------------------------------------------------------+
 
 
 INPUT FILE: homepage.html
   File type  = HTML CODE
-  Input size = 1008 bytes
-  Redundancy = 367 bytes (37%)
-  Image size = 641 bytes (63%)
+  Input size = 1084 bytes
+  Redundancy = 381 bytes (36%)
+  Image size = 703 bytes (64%)
 +---------------------------------------------------------------------------------------------------------------------+
 <!DOCTYPE html><html><head><title>zhanzr21's simple webserver on AT-START-F407 board</title><style> h1 { background-col
 or: lightyellow; } body { background-color: lightblue; } </style></head><body><h1><font size=15>Simple Webserver on AT-
 START-F407</font></h1><table height="800"><tr><th>Board</th><th>Image</th></tr><tr><td><p/>Main Chip: AT32F407VGT7 <p/>
 (RAM:224 KB; FLASH:1024 KB) <p/>3 I2C <p/>8 USART <p/>4 SPI <p/>2 CAN <p/>Crystal-less USB 2.0 <p/>2 SDIO <p/>Ethernet 
-</td><td><img src=atstartf407_with_ethernet.jpg></img></td></tr><tr><td><a href="board_info.html"><font size=15>Board I
-nfo</font></a></td></tr></table></body></html>
+</td><td><img src=atstartf407_with_ethernet.jpg></img></td></tr><tr><td><a href="led_info.html"><font size=15>LED Info<
+/font></a></td><td><a href="adc_info.html"><font size=15>ADC Info</font></a></td></tr></table></body></html>
 +---------------------------------------------------------------------------------------------------------------------+
 
 
@@ -62,14 +67,14 @@ INPUT FILE: atstartf407_with_ethernet.jpg
 >H7f..o>U..._....|1>....OC....X.-...g..v..c.r......;zc..A...&.....^...I.....>.xRV.V.H.C).IGB:...uV_.~..*.4..M.t?...v.W.
 W.z..u.[....J4..9....:.%0...PG.Z......l.-<2.&........).........'.c.03..rI.+....*..1.....S...}......^..<W.Mgg&.uu.]Z...K
 ..[...M...+...[..H;Xn(._....TZ....[.v>!....)R.....mF...q.t.,;...m..|>..k.m6MJ..$......c....fR.D.]..Q....].V..@....q.DE.
+FCARM FILE CONVERTER V2.58                                                            01/02/2023  16:55:05  PAGE 2
+
+
 T...t...''..*...................F..:.h,b....{.{..I...1.8...)...nm'.............Y....7I......~!...RY....y.@.......:..$..
 .H.........]...oX.........n.......%r...B#......Er..{...I'w..xo...O...r.\...6..f.H.Wy{s..H....l.smUY..I.Dlk.....0|R..5..
 .......K...w....c....@.`..3/-........^........~.MZ.......-...QH..../7+.]. ...Q....<i....~..M.7.b.\.f..S.e....P.......rV
 P..R.F.V......~.=<E{.6.z....sxi.....M......'S.f.Vk.............b..;.`..8....k....,..T.A......~..!....0.N .........:....
 |;....[..'.|..i.......j...\.;....e...Vch..b...B@....<y..sO.....C....6...vJ.,B.&.!.g.?4@........G.X..^.U.._.......j.W..y
-FCARM FILE CONVERTER V2.58                                                            12/25/2022  01:05:00  PAGE 2
-
-
 k.+q....xv........ui...U....K..`'...o...@....+/.x'Q[_......^M....Ur.}.&A4...ic1J....7..N>u.{..B...>.\_C.x..?./..yl...2(
 ..........4e...L..3..h..xc.7......?...se...Oc......6.M<.p..)....F. $.*......J.lWU....>...>...d..W.F..MV_.\...H6.....#g.
 .<V7.,..KD.......,...W.|i<.....F.'.O).<BN..*....~.x{..n..U......U.t...u..#.l.&...\M;.r..!*..y.._.......|<.;...7..:....6
@@ -130,14 +135,14 @@ P..*...=B.......\O.....N9.X<g.8.i.'...>.z?.....~....:i^....</...:k........c.t$.#
 .<....>R..?f.2m......4...3....O.....S...>Hd. ...7S.V....v>a...1..X..c..u.I....q>.}.Goi........c.Y9f ...;.....}7....d.t.
 .6Il.U...!.7....f./.K.........8[.5.A....;..^.....g..Tn..Q.*)P...G......~...!. .%...h...f....T0<b..[FRfy.. .............
 .......~......K........:...\..{b...mcB.,m$r...1...Hf.+/.x_.W.<e..S.....o.......'..{H.u.d.<..}.@....;.9%V....<q.JK......
+FCARM FILE CONVERTER V2.58                                                            01/02/2023  16:55:05  PAGE 3
+
+
 .a....Z.....:k.l.7.6.p.|...=.q....P.9...v.l.vr........#..?....:q..r..r.2M(..]...k|S...)k.6..O.....i..|D> .}Ee.d...c.".5
 .F...D.L.!$.f*8..!.:....=?D.4.....A..+K.#I.n/.6...D.I#.`y....p....................so.|B..........SM-..[...5.yJ..!d..$dg
 ..~.?.o.K.Y<R...z..$.v...?.#).j.a*..v.o.f...[aaJu}.o.7}.............:...(.....v.I....Sn...}..V......Eu.....F.0.r..B..Y.
 ...30...XM.p....*...._.4v..... ....b..at.v.@...I1..pS.@@*U.;...v....Z...^2...../m....F.......2.)....N...d.....<am...~.V
 Px...'.I.....^.j..x|.......F .....6....=H.............1...2........]5.........uUh.bHF..2.....3.....s.....|?...C..I...<Y
-FCARM FILE CONVERTER V2.58                                                            12/25/2022  01:05:00  PAGE 3
-
-
 k.3)..fpIc'.;(...|....0.Z...g.s._...?..^....W...[.G..qut|.Sp...|..U....u.?.|......P..?.4.......y>.....O..T..b...W..U.(.
 B.T8.O...%N7VZ.....N.&aG....s.nYF:E_t...*V...~.M+...!...w........u/...R.N.k6X..{C..`........Lo.0<.U.....?.\.c.qi....R..
 ...l0....v.(.........P|G.3.R.]........#>..%...u.K.......^y.&....R..[........|C........................,7Q..K ..%Pc.e0Yt
@@ -198,14 +203,14 @@ E4....~C...8YO.)T..m.+..[..6.h..........t+..t..&.&..57)o.L.I(gf........0.xo.....
 r..6wP...&.(...'.U..I.i.......A.... ...k...c..V.R...kI...B..BRFV...N0A.&..T.5k.I*..G......../......5....V.>...b..P>0.it
 ...H.$..M5.......fXq..n..K.-t.......h.2O&%O5...l.N.U....@+.~!~..g...O.......5..V.].....I....2...v......v^..c.....~..=3A
 .tt..-ue.......<...n.[..J..=2......Tp...}~~K.6..a..,".R..tM7n..j.t..=......7.6.%.~..&...\Z.........N@........o.u.?M.o..
+FCARM FILE CONVERTER V2.58                                                            01/02/2023  16:55:05  PAGE 4
+
+
 ..k....6......O.....n...r.....T..+z..q.)>Z.I..O.......-mf..$......n..Q....8.c.ul....n.1N.mxw......u..7G.e.~..?...HV[O>W
 ."....4n...)=9...........Y.KX5}*o....T[.(.F.V9I .d+.....J..zu`.M....9...u.8.wv........x~./.)..t.x~Y...]..G......*.t...`
 ......q......k?..E.....x.}6.*8.k...C}...*HQ......2....;..|*...$._....]y.y>...n.....Y..m-.q#...J2......!W.A.xG.....~.sx>
 .R.......=P.Ab.Y....&.8...#...........Q.M..E..I]wV.m.........e......6.gx.;n.......c.e.U...p.......L6.....6.8...q$P...Z.
 $v..4...............W.&....|U...j.{..a.[Qop.....$2H.#`........>.x'...u&.6..EiI..w..k..W..V.........*.A.........?n..E.=.
-FCARM FILE CONVERTER V2.58                                                            12/25/2022  01:05:00  PAGE 4
-
-
 ..x..$.".....U.m..d....&...h..!.<.z............y[..p.ex.F?.[...f.....n....=.j.+_{..S...om........Q..7...P.|&.....U..\*.
 ..v..Z..+.Z._.....BK.../4.....m.25..}..U..~PH.....9....P...?.......RT....S....{O.?..>.R....[..|..2.[.Hl.8...........4..
 .k.sy>.^.....%.......r.......(jZ.7pi.j....u0..n.a..FO...X..1^e..).....__-...Z.......[B....f...f.6.........Kr.....T....u
@@ -266,14 +271,14 @@ Ta.._......I^~..+........WO..........o.x.y<E..6.<qk..o<^.....O..K<v.N{x..."Ud...
 ...W.do...i#..t.\...u .........-..:......S..\...[.m.t...>.........B~................QB..1.....?.>....%........Dai.4.m.d
 $...A+..3...t..EL..m]...
 +---------------------------------------------------------------------------------------------------------------------+
+FCARM FILE CONVERTER V2.58                                                            01/02/2023  16:55:05  PAGE 5
+
+
 
 
 INPUT FILE: favicon.ico
   File type  = BINARY
   Input size = 3870 bytes
-FCARM FILE CONVERTER V2.58                                                            12/25/2022  01:05:00  PAGE 5
-
-
 +---------------------------------------------------------------------------------------------------------------------+
 ............ .....F......... .....)...  .... .9...5...@@.... .....n....PNG........IHDR.............(-.S....PLTE""""""""
 """"""""""2PX=r.)7;*:>H..-BGE..8do5Xb6[eK..K..1MU9gs3S\I..:gt'03@{.V..T..A}.V..@y.6\fH..-CII..E..+;@7_i7_jF..J..K..H..-
@@ -311,10 +316,10 @@ b...q..&.....$..z.....H>a.KT1/..1O..0...h...Y.A....-.>.....X...}......;...N...v.
 +---------------------------------------------------------------------------------------------------------------------+
 
 MODULE INFORMATION:
-  Number of files  = 4
-  Total input size = 33398 bytes
-  Redundant data   = 2650 bytes (8%)
-  Web image size   = 30748 bytes (92%)
+  Number of files  = 5
+  Total input size = 32010 bytes
+  Redundant data   = 1688 bytes (6%)
+  Web image size   = 30322 bytes (94%)
 
 
 FCARM COMPLETE.  0 ERROR(s)

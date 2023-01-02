@@ -64,6 +64,8 @@
 #include "at32f403a_407_adc.h"
 #include "at32f403a_407_board.h"
 
+extern volatile uint32_t local_time;
+
 #if LWIP_TCP && LWIP_CALLBACK_API
 
 /** Minimum length for a valid HTTP/0.9 request: "GET /\r\n" -> 7 bytes */
@@ -105,7 +107,8 @@ char html_tmp[4096] = { 0 };
 bool g_binary_file_debug = false;
 
 extern const unsigned char homepage_name[];
-extern const unsigned char board_info_name[];
+extern const unsigned char adc_info_name[];
+extern const unsigned char led_info_name[];
 extern const unsigned char f407board_img_name[];
 extern const unsigned char favicon_name[];
 
@@ -2003,29 +2006,52 @@ static err_t http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p,
 			printf("\n%s %u-%u:\n", __func__, p->tot_len, payload_dbg_limit);
 			printf_head("\ndbgPayload:\n", data, p->tot_len, payload_dbg_limit);
 
-			if (strncmp(data + GET_PREFIX_OFFSET, board_info_name,
-					strlen(board_info_name)) == 0) {
-				printf("\nrequest %s\n", board_info_name);
+			if (strncmp(data + GET_PREFIX_OFFSET, adc_info_name,
+					strlen(adc_info_name)) == 0) {
+				printf("\nrequest %s\n", adc_info_name);
 
 				g_binary_file_debug = false;
 
 				uint16_t ADCVal = 0, iADCVa;
-				float fADCVal = 0;
 
 				pbuf_free(p);
 
 				ADCVal = adc_ordinary_conversion_data_get(ADC1);
-
-				fADCVal = (float) ((float) ADCVal / (float) 4096.00)
+				float fADCVal = (float) ((float) ADCVal / (float) 4096.00)
 						* (float) 3.3;
+//				iADCVa = ((ADCVal * 100) / 4096) * 512 / 100;
 
-				iADCVa = ((ADCVal * 100) / 4096) * 512 / 100;
-
-				fs_open(&file, board_info_name);
-				sprintf(html_tmp, file.data, fADCVal, iADCVa);
+				fs_open(&file, adc_info_name);
+				sprintf(html_tmp, file.data,
+						fADCVal, local_time);
+				char* end_of_html = strstr(html_tmp, "</html>");
+				end_of_html[7] = 0;
 				hs->file = html_tmp;
 				hs->left = strlen(html_tmp);
 
+				http_send(pcb, hs);
+
+				/* Tell TCP that we wish be to informed of data that has been
+				 successfully sent by a call to the http_sent() function. */
+				tcp_sent(pcb, http_sent);
+			} else if (strncmp(data + GET_PREFIX_OFFSET, led_info_name,
+					strlen(led_info_name)) == 0) {
+				printf("\nrequest %s\n", led_info_name);
+
+				g_binary_file_debug = false;
+
+				pbuf_free(p);
+
+				fs_open(&file, led_info_name);
+				sprintf(html_tmp, file.data,
+						((0==at32_led_get_output_status(LED2))?"checked":""),
+						((0==at32_led_get_output_status(LED3))?"checked":""),
+						((0==at32_led_get_output_status(LED4))?"checked":"")
+					);
+				char* end_of_html = strstr(html_tmp, "</html>");
+				end_of_html[7] = 0;
+				hs->file = html_tmp;
+				hs->left = strlen(html_tmp);
 				http_send(pcb, hs);
 
 				/* Tell TCP that we wish be to informed of data that has been
@@ -2037,40 +2063,34 @@ static err_t http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p,
 
 				g_binary_file_debug = false;
 
-				i = 15;
-				while (data[i] != 0x20/* */) {
-					i++;
-					if (data[i] == 0x6C /* l */) {
-						i++;
-						if (data[i] == 0x65 /* e */) {
-							i++;
-							if (data[i] == 0x64 /* d*/) {
-								i += 2;
+				// Only support one method: METHOD_UPDATE_LED
+				char* ptr_parameter = strstr(data, METHOD_UPDATE_LED);
+				ptr_parameter += strlen(METHOD_UPDATE_LED) + 1;
 
-								if (data[i] == 0x32 /* 2 */) {
-									at32_led_on(LED2);
-									memcpy(LED2_html, Led_Select,
-											strlen(Led_Select));
-									LED2_Status = 1;
-								}
-
-								if (data[i] == 0x33 /* 3 */) {
-									at32_led_on(LED3);
-									memcpy(LED3_html, Led_Select,
-											strlen(Led_Select));
-									LED3_Status = 1;
-								}
-
-								if (data[i] == 0x34 /* 4 */) {
-									at32_led_on(LED4);
-									memcpy(LED4_html, Led_Select,
-											strlen(Led_Select));
-									LED4_Status = 1;
-								}
-							}
-						}
+				char* ptr_http_version = strstr(ptr_parameter, "HTTP/");
+				char* ptr_search_led=ptr_parameter;
+				while(ptr_search_led < ptr_http_version) {
+					char* p_led = strstr(ptr_search_led, "led");
+					if(ptr_search_led >= ptr_http_version) {
+						break;
 					}
+
+					if(p_led[4] == '2') {
+						at32_led_on(LED2);
+						LED2_Status = 1;
+					} else if(p_led[4] == '3') {
+						at32_led_on(LED3);
+						LED3_Status = 1;
+					} else if(p_led[4] == '4') {
+						at32_led_on(LED4);
+						LED4_Status = 1;
+					} else {
+						;
+					}
+
+					ptr_search_led = p_led+4;
 				}
+
 				if (LED2_Status == 0) {
 					at32_led_off(LED2);
 				}
@@ -2082,8 +2102,22 @@ static err_t http_recv(void *arg, struct altcp_pcb *pcb, struct pbuf *p,
 				}
 				pbuf_free(p);
 
-				fs_open(&file, board_info_name);
-				sprintf(html_tmp, file.data, LED2_html, LED3_html, LED4_html);
+				  printf("status of led after update: %u %u %u\n",
+						  at32_led_get_output_status(LED2),
+						  at32_led_get_output_status(LED3),
+						  at32_led_get_output_status(LED4));
+
+				fs_open(&file, led_info_name);
+				sprintf(html_tmp, file.data,
+						((0 == at32_led_get_output_status(LED2)) ?
+								"checked" : ""),
+						((0 == at32_led_get_output_status(LED3)) ?
+								"checked" : ""),
+						((0 == at32_led_get_output_status(LED4)) ?
+								"checked" : "")
+								);
+				char *end_of_html = strstr(html_tmp, "</html>");
+				end_of_html[7] = 0;
 				hs->file = html_tmp;
 				hs->left = strlen(html_tmp);
 
